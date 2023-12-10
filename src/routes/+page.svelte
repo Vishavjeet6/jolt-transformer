@@ -98,7 +98,7 @@
   <label for="input2">Spec:</label>
   <textarea id="input2" bind:value={input2}></textarea>
 
-  <button on:click={updateOutput}>Update Output</button>
+  <button on:click={updateOutput}>Output</button>
 
   <label for="output">Output Json:</label>
   <textarea id="output" bind:value={output} readonly></textarea>
