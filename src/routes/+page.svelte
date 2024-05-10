@@ -1,12 +1,44 @@
 
 <script>
   import { onMount } from "svelte";
-  let input1 = '';
-  let input2 = '';
+  let input1 = `{
+  "alldetails": {
+    "classid": 1,
+    "schoolid": 3
+  }
+}`;
+  let input2 = `[
+  {
+    "operation": "shift",
+    "spec": {
+      "alldetails": {
+        "classid": {
+          "#Id_class": "data[0].source",
+          "@(1,classid)": "data[0].value"
+        },
+        "teacherid": {
+          "#Id_teacher": "data[1].source",
+          "@(1,teacherid)": "data[1].value"
+        },
+        "schoolid": {
+          "#Id_school": "data[2].source",
+          "@(1,schoolid)": "data[2].value"
+        }
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": "=recursivelySquashNulls"
+    }
+  }
+]`;
   let output = '';
   const options = { indent_size: 2, space_in_empty_paren: true }
 
   function updateOutput() {
+    output = '';
     const requestBody = `{
     "jsonspec": ${input2},
     "jsoninput": ${input1}
@@ -30,6 +62,7 @@
     // This function ensures that the server is running when the component is mounted
     onMount(() => {
     fetch('https://jolt-api.onrender.com/api/ping'); // Simply fetch the server to start it
+    updateOutput();
   });
 </script>
 
@@ -91,6 +124,7 @@
 
 <main>
   <h1>Jolt Transformer v0.1.6</h1>
+  It might take few seconds to spin up the backend, wait for the default output :)
 
   <label for="input1">Input Json:</label>
   <textarea id="input1" bind:value={input1}></textarea>
